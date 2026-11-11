@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { redirect } from 'next/navigation'
 
-import { addNote, logOut } from './actions'
+import { addNote, deleteNote, logOut } from './actions'
 import { createClient } from '@/lib/supabase/server'
 
 async function NotesList() {
@@ -21,6 +21,25 @@ async function NotesList() {
         <li key={note.id} className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
           <p className="text-base font-semibold text-slate-900">{note.title}</p>
           <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">{note.body}</p>
+
+          <div className="mt-3 flex gap-2">
+            <a
+              href={`/notes/${note.id}`}
+              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+            >
+              Edit
+            </a>
+
+            <form action={deleteNote} className="inline-block">
+              <input type="hidden" name="id" value={note.id} />
+              <button
+                type="submit"
+                className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100"
+              >
+                Delete
+              </button>
+            </form>
+          </div>
         </li>
       ))}
     </ul>
