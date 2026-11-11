@@ -1,6 +1,6 @@
 create table notes (
 id bigint generated always as identity primary key,
-user_id uuid not null default auth.uid() references auth.users (id) on 
+user_id uuid not null default auth.uid() references auth.users (id) on
 delete cascade,
 title text not null check (length(trim(title)) > 0),
 body text not null default '',
