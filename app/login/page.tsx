@@ -1,78 +1,8 @@
 'use client'
-
 import { useActionState } from 'react'
-
 import { authenticate } from './actions'
-
-const initialState = { message: '' }
-
+import Brand from '../brand'
 export default function LoginPage() {
-  const [state, action, isPending] = useActionState(authenticate, initialState)
-  const message = state.message
-
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-100 p-6">
-      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 className="mb-6 text-2xl font-semibold text-slate-900">Secure Notes</h1>
-
-        <form className="space-y-4" action={action}>
-          <div className="space-y-2">
-            <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-0 transition focus:border-slate-500"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-0 transition focus:border-slate-500"
-            />
-          </div>
-
-          <div className="flex gap-3 pt-2">
-            <button
-              type="submit"
-              name="intent"
-              value="login"
-              disabled={isPending}
-              className="flex-1 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isPending ? 'Logging in...' : 'Log in'}
-            </button>
-
-            <button
-              type="submit"
-              name="intent"
-              value="signup"
-              disabled={isPending}
-              className="flex-1 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isPending ? 'Signing up...' : 'Sign up'}
-            </button>
-          </div>
-        </form>
-
-        {message ? (
-          <p aria-live="polite" className="mt-4 text-sm text-red-600">
-            {message}
-          </p>
-        ) : null}
-      </div>
-    </main>
-  )
+  const [state, action, isPending] = useActionState(authenticate, { message: '' })
+  return <main className="auth-layout"><section className="auth-story"><Brand /><div><p className="eyebrow mb-5">For the moments that matter</p><h2 className="story-quote">Good teaching starts<br />with paying attention.</h2><p className="mt-6 max-w-sm text-sm leading-7 text-[#c5d2bc]">A quiet place to capture progress, reflect on each lesson, and plan what comes next.</p><div className="mt-9 rounded-2xl border border-[#63816b] bg-[#ffffff08] p-6"><p className="eyebrow mb-3">Your notebook, your space</p><p className="text-sm leading-7 text-[#e0e8d6]">Keep each student&apos;s story in focus. Your notes belong to your account and stay separate from other tutors&apos; work.</p></div></div><footer className="text-xs text-[#b6ca9c]">Made for thoughtful teaching. One note at a time.</footer></section><section className="auth-form-side"><div className="auth-form"><p className="eyebrow mb-3">Your personal workspace</p><h1 className="display-title">Welcome back.</h1><p className="muted mt-4 mb-9">Log in to pick up where you left off.<br />New here? Enter your details and choose Sign up.</p><form action={action} className="space-y-5"><div><label htmlFor="email" className="field-label">Email address</label><input id="email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required className="field" /></div><div><label htmlFor="password" className="field-label">Password</label><input id="password" name="password" type="password" autoComplete="current-password" required className="field" aria-describedby="password-help" /><p id="password-help" className="muted mt-2 text-xs">Creating an account? Use at least 8 characters.</p></div><div className="space-y-3 pt-2"><button name="intent" value="login" disabled={isPending} className="button button-primary w-full">{isPending ? 'Please wait…' : 'Log in'} <span aria-hidden="true">&#8599;</span></button><button name="intent" value="signup" disabled={isPending} className="button button-secondary w-full">Create an account</button></div></form>{state.message ? <p aria-live="polite" className="error">{state.message}</p> : null}<p className="muted mt-8 text-center text-xs">Using a shared computer? Remember to log out when you finish.</p></div></section></main>
 }
