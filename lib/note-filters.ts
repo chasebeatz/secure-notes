@@ -37,5 +37,5 @@ export function workspaceUrl(q: string, page: number, view: string, subject: str
  if(page > 1) params.set('page', String(page))
  if(view !== 'notes') params.set('view', view)
  if(subject) params.set('subject', subject)
- return params.size ? '/?' + params : '/'
+ return params.size ? '/notes?' + params : '/notes'
 }

@@ -17,8 +17,7 @@ export default async function NotesList({ searchParams }: { searchParams: Promis
  const { data:notes, count, error } = await query.range((page-1)*SIZE,page*SIZE-1)
  const url=(p:number)=>workspaceUrl(q,p,view,subject)
  return <>
-  <nav aria-label="Notebook views" className="mb-5 flex flex-wrap gap-2">{[['notes','My notes'],['pinned','Pinned'],['reminders','Follow-ups'],['trash','Trash']].map(([key,label])=><Link key={key} aria-current={view===key?'page':undefined} className={`button ${view===key?'button-primary':'button-secondary'}`} href={workspaceUrl('',1,key,'')}>{label}</Link>)}</nav>
-  <form action="/" method="get" role="search" className="mb-5 space-y-3">
+  <form action="/notes" method="get" role="search" className="mb-5 space-y-3">
    <input type="hidden" name="view" value={view}/>
    <label htmlFor="note-search" className="field-label">Search {view === 'trash' ? 'Trash' : 'notes'}</label>
    <input key={q} id="note-search" name="q" type="search" defaultValue={q} maxLength={200} placeholder="Search titles, text, or subjects..." className="field"/>

@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import Brand from '@/app/brand'
+import WorkspaceShell from '@/app/workspace-shell'
 
 import { logOut } from '@/app/actions'
 import EditNoteForm from './edit-note-form'
@@ -54,9 +55,9 @@ async function EditNoteContent({
   }
 
   return (
-    <main className="workspace">
+    <WorkspaceShell><main className="workspace">
       <header className="topbar"><Brand /><div className="account"><div><p className="eyebrow mb-1">Logged in as</p><p className="account-email">{user.email}</p></div><form action={logOut}><button className="button button-secondary">Log out ↗</button></form></div></header>
-      <div className="mx-auto max-w-2xl"><div className="hero"><Link href="/" className="muted hover:underline">← Back to my notes</Link><p className="eyebrow mt-8 mb-3">A little more clarity</p><h1 className="display-title">Refine your note.</h1><p className="muted mt-4">Revisit the details. Keep the next step in focus.</p></div><section className="panel composer"><EditNoteForm note={note} /></section></div>
-    </main>
+      <div className="mx-auto max-w-2xl"><div className="hero"><Link href="/notes" className="muted hover:underline">← Back to my notes</Link><p className="eyebrow mt-8 mb-3">A little more clarity</p><h1 className="display-title">Refine your note.</h1><p className="muted mt-4">Revisit the details. Keep the next step in focus.</p></div><section className="panel composer"><EditNoteForm note={note} /></section></div>
+    </main></WorkspaceShell>
   )
 }

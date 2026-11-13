@@ -17,8 +17,8 @@ export async function addNote(_state: ActionMessage | undefined, form: FormData)
  const supabase = await createClient()
  const { error } = await supabase.from('notes').insert(input.value)
  if (error) return { message: 'Could not save your note. Please try again.' }
- revalidatePath('/')
- return { message: '' }
+ revalidatePath('/', 'layout')
+ redirect('/notes')
 }
 export async function updateNote(_state: ActionMessage | undefined, form: FormData): Promise<ActionMessage> {
  const id = Number(form.get('id'))
@@ -28,8 +28,8 @@ export async function updateNote(_state: ActionMessage | undefined, form: FormDa
  const supabase = await createClient()
  const { data, error } = await supabase.from('notes').update({ ...input.value, updated_at: new Date().toISOString() }).eq('id', id).is('deleted_at', null).select('id').single()
  if (error || !data) return { message: 'Could not update this note. It may have been moved to Trash.' }
- revalidatePath('/')
- redirect('/')
+ revalidatePath('/', 'layout')
+ redirect('/notes')
 }
 export async function noteCommand(_state: ActionMessage, form: FormData): Promise<ActionMessage> {
  const id = Number(form.get('id'))
@@ -48,7 +48,7 @@ export async function noteCommand(_state: ActionMessage, form: FormData): Promis
  }
  const { data, error } = await query.select('id').single()
  if (error || !data) return { message: 'Could not change this note. Refresh and try again.' }
- revalidatePath('/')
+ revalidatePath('/', 'layout')
  return { message: '' }
 }
 export type BulkResult = { message: string; ok: boolean }
@@ -62,7 +62,7 @@ export async function bulkNoteCommand(_state: BulkResult, form: FormData): Promi
  query = command === 'restore' || command === 'purge' ? query.not('deleted_at', 'is', null) : query.is('deleted_at', null)
  const { data, error } = await query.select('id')
  if (error) return { message: 'Could not apply this action. Your selection is kept; please try again.', ok: false }
- revalidatePath('/')
+ revalidatePath('/', 'layout')
  const count = data?.length ?? 0
  return { message: count === ids.length ? `Updated ${count} ${count === 1 ? 'note' : 'notes'}.` : `Updated ${count} notes. Some selected notes were no longer available.`, ok: true }
 }

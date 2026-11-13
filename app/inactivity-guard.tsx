@@ -32,7 +32,7 @@ export default function InactivityGuard() {
    }
    const update=()=>{last=Date.now();try {localStorage.setItem(key,String(last))}catch{};channel?.postMessage(last);setRemaining(null)}
    const activity=()=>{if(Date.now()-last>=TIMEOUT) {logout();return} if(Date.now()-last<TIMEOUT-WARNING&&Date.now()-last>1000) update()}
-   const tick=()=>{const ms=TIMEOUT-(Date.now()-last);if(ms<=0)logout();else setRemaining(ms<=WARNING?Math.ceil(ms/1000):null)}
+   const tick=()=>{const ms=TIMEOUT-(Date.now()-last);if(ms<=0)logout();else {if(ms<=WARNING)window.dispatchEvent(new Event('secure-notes-idle-warning'));setRemaining(ms<=WARNING?Math.ceil(ms/1000):null)}}
    const storage=(event:StorageEvent)=>{if(event.key===key){const value=Number(event.newValue);if(value>last&&value<=Date.now())last=value}}
    if(channel) channel.onmessage=event=>{if(event.data==='logout')logout();else if(typeof event.data==='number'&&event.data>last&&event.data<=Date.now())last=event.data}
    const events=['pointerdown','keydown','scroll','touchstart'] as const
